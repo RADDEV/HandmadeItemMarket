@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | E-Shop</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/font-awesome.min.css")
+    @Styles.Render("~/Content/prettyPhoto.css")
+    @Styles.Render("~/Content/price-range.css")
+    @Styles.Render("~/Content/animate.css")
+    @Styles.Render("~/Content/main.css")
+    @Styles.Render("~/Content/responsive.css")
+   
+
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <link rel="shortcut icon" href="~/Content/images/ico/favicon.ico">
+</head><!--/head-->
+
+<body>
+    <header id="header">
+
+        <div class="header-middle">
+            <!--header-middle-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="logo pull-left">
+                            <a href="index.html"><span>S</span>criBu</a>
+                            @*<a href="index.html"><img src="https://lh5.googleusercontent.com/gYPF927VyeQf0qHNRiCvrB6vMVuczdJ2EhmbEMp7psRl16pG_ojBa3wor5sfOvcfqf3jB3hcD8Bm4A=w1366-h638-rw" style="width: 80%;height: 80%"></a>*@
+                        </div>
+                        <div class="btn-group pull-right">
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="shop-menu pull-right">
+                            <ul class="nav navbar-nav">
+                                <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                                <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                                <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+                                <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+                                <li>
+                                    <ul class="nav navbar-nav navbar-right">
+                                        <li><a href="/Account/Register" id="registerLink">Register</a></li>
+                                        <li><a href="/Account/Login" id="loginLink">Log in</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/header-middle-->
+        <div class="header-bottom">
+            <!--header-bottom-->
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="mainmenu pull-left">
+                            <ul class="nav navbar-nav collapse navbar-collapse">
+                                <li><a href="index.html" class="active">Home</a></li>
+                                <li class="dropdown">
+                                    <a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="shop.html">Products</a></li>
+                                        <li><a href="product-details.html">Product Details</a></li>
+                                        <li><a href="checkout.html">Checkout</a></li>
+                                        <li><a href="cart.html">Cart</a></li>
+                                        <li><a href="login.html">Login</a></li>
+                                        @*@Html.Partial("_LoginPartial")*@
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="blog.html">Blog List</a></li>
+                                        <li><a href="blog-single.html">Blog Single</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="404.html">404</a></li>
+                                <li><a href="contact-us.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="search_box pull-right">
+                            <input type="text" placeholder="Search" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--/header-bottom-->
+    </header><!--/header-->
+
+
+    <main>@RenderBody()</main>
+
+
+    <!--/Footer-->
+    <footer id="footer">
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <p class="pull-left">Copyright © 2013 E-Shop Inc. All rights reserved.</p>
+                    <p class="pull-right">Designed by <span><a target="_blank" href="http://invoinn.com/">InvoInn</a></span></p>
+                </div>
+            </div>
+        </div>
+
+    </footer><!--/Footer-->
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jquery.scrollUp.min.js")
+    @Scripts.Render("~/Scripts/price-range.js")
+    @Scripts.Render("~/Scripts/jquery.prettyPhoto.js")
+    @Scripts.Render("~/Scripts/main.js")
+    @*<script src="js/jquery.scrollUp.min.js"></script>*@
+    @*<script src="js/price-range.js"></script>*@
+    @*<script src="js/jquery.prettyPhoto.js"></script>*@
+    @*<script src="js/main.js"></script>*@
+
+
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

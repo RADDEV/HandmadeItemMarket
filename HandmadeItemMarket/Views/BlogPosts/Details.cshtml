@@ -1,0 +1,66 @@
+﻿@model  HandmadeItemMarket.Models.EntityModels.BlogPost
+
+
+@{
+    ViewBag.Title = "Details";
+}
+<section>
+    <div class="container">
+        <div class="row">
+            <!--Sidebar-->
+            @Html.Partial("_Sidebar")
+            <!--Sidebar-->
+
+            <div class="col-sm-9 padding-right">
+                <h2>Details</h2>
+
+                <div>
+                    <h4>BlogPost</h4>
+                    <hr />
+                    <div class="blog-post-area">
+                        <h2 class="title text-center">Latest From our Blog</h2>
+                        <div class="single-blog-post">
+                            <h3 style="alignment: center">@Model.Title</h3>
+                            <div class="post-meta">
+                                <ul>
+                                    <li><i class="fa fa-user"></i> @Model.Poster.UserName</li>
+                                    <li><i class="fa fa-clock-o"></i> @Model.DatePosted.Hour:@Model.DatePosted.Minute</li>
+                                    <li><i class="fa fa-calendar"></i> @Model.DatePosted.Date.Day-@Model.DatePosted.Date.Month-@Model.DatePosted.Date.Year</li>
+                                </ul>
+                                @*<span>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                    </span>*@
+                            </div>
+                            <a href="">
+                                <img src="@Model.Image" alt="">
+                            </a>
+
+                            @*<div class="pager-area">
+                                    <ul class="pager pull-right">
+                                        <li><a href="#">Pre</a></li>
+                                        <li><a href="#">Next</a></li>
+                                    </ul>
+                                </div>*@
+                        </div>
+                        <div class="common-modal modal fade" id="common-Modal1" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-content">
+                                <ul class="list-inline item-details">
+                                    <li><a href="http://themifycloud.com">ThemifyCloud</a></li>
+                                    <li><a href="http://themescloud.org">ThemesCloud</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!--/blog-post-area-->
+                </div>
+                <p>
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                    @Html.ActionLink("Back to List", "Index")
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

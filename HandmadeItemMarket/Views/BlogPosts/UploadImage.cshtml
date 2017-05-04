@@ -1,0 +1,25 @@
+﻿@model HandmadeItemMarket.Models.EntityModels.BlogPost
+@{
+    ViewBag.Title = "UploadImage";
+}
+
+<h2>Upload Image</h2>
+<div class="container">
+    <div class="row">
+        <div class="form-group">
+            <div class="col-md-10">
+                @using (Html.BeginForm("UploadImage", "BlogPosts", @Model.Id, FormMethod.Post,
+                                new { enctype = "multipart/form-data" }))
+                {
+                    <label for="file">Upload Image:</label>
+                    <input type="file" name="file" id="file" style="width: 100%;" />
+                    <input type="submit" value="Upload" class="submit" />
+                }
+                <br/>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

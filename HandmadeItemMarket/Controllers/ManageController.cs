@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HandmadeItemMarket.Models;
+using HandmadeItemMarket.Models.ViewModels.Manage;
 
 namespace HandmadeItemMarket.Controllers
 {

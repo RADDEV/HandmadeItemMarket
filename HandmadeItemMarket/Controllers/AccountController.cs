@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using HandmadeItemMarket.Models;
+using HandmadeItemMarket.Models.EntityModels;
+using HandmadeItemMarket.Models.ViewModels;
+using HandmadeItemMarket.Models.ViewModels.Account;
 
 namespace HandmadeItemMarket.Controllers
 {
@@ -151,10 +154,14 @@ namespace HandmadeItemMarket.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,Name = model.Name,HomeTown = model.HomeTown,Neighbourhood = model.Neighbourhood};
+                user.RegisterDate=DateTime.Now;
                 var result = await UserManager.CreateAsync(user, model.Password);
+                
+               
                 if (result.Succeeded)
                 {
+                    this.UserManager.AddToRole(user.Id, "RegisteredUser");
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771

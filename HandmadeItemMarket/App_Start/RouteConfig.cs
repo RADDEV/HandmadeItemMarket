@@ -12,17 +12,13 @@ namespace HandmadeItemMarket
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.MapMvcAttributeRoutes();
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-            routes.MapRoute(
-               name: "Products",
-               url: "Products/All",
-               defaults: new { controller = "Products", action = "Index"}
-           );
+
         }
     }
 }

@@ -81,14 +81,6 @@
     <Compile Include="Migrations\201705041135367_orderUpdate.Designer.cs">
       <DependentUpon>201705041135367_orderUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705071157479_kur1.cs" />
-    <Compile Include="Migrations\201705071157479_kur1.Designer.cs">
-      <DependentUpon>201705071157479_kur1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201705071353540_kurec.cs" />
-    <Compile Include="Migrations\201705071353540_kurec.Designer.cs">
-      <DependentUpon>201705071353540_kurec.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -113,12 +105,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705041135367_orderUpdate.resx">
       <DependentUpon>201705041135367_orderUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705071157479_kur1.resx">
-      <DependentUpon>201705071157479_kur1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201705071353540_kurec.resx">
-      <DependentUpon>201705071353540_kurec.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

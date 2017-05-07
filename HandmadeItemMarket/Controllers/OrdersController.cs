@@ -14,9 +14,8 @@ using HandmadeItemMarket.Models.ViewModels;
 using HandmadeItemMarket.Services;
 using Microsoft.AspNet.Identity;
 
-namespace HandmadeItemMarket.Areas.Market.Controllers
+namespace HandmadeItemMarket.Controllers
 {
-    [RouteArea("Market", AreaPrefix = "")]
     [RoutePrefix("Orders")]
     [CustomAuthorize(Roles = "RegisteredUser, Admin")]
     public class OrdersController : Controller
@@ -37,8 +36,8 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
             return View(vms);
 
             
-            //var orders = db.Orders.Where(a => a.Seller.Id == currentUserId).ToList();
-            //return View(orders);
+            var orders = db.Orders.Where(a => a.Seller.Id == currentUserId).ToList();
+            return View(orders);
         }
 
         // GET: Orders/Details/5

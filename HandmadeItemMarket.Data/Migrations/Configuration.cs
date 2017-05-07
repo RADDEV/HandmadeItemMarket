@@ -45,7 +45,7 @@ namespace HandmadeItemMarket.Data.Migrations
             {
                 Category c1 = new Category()
                 {
-                    Name = "Clothing and Accessories"
+                    Name = "Clothing & Accessories"
                 };
                 Category c2 = new Category()
                 {
@@ -53,7 +53,7 @@ namespace HandmadeItemMarket.Data.Migrations
                 };
                 Category c3 = new Category()
                 {
-                    Name = "Craft Supplies and Tools"
+                    Name = "Craft Supplies & Tools"
                 };
                 Category c4 = new Category()
                 {
@@ -65,11 +65,11 @@ namespace HandmadeItemMarket.Data.Migrations
                 };
                 Category c6 = new Category()
                 {
-                    Name = "Home and Living"
+                    Name = "Home & Living"
                 };
                 Category c7 = new Category()
                 {
-                    Name = "Kids and Baby"
+                    Name = "Kids & Baby"
                 };
                 Category c8 = new Category()
                 {

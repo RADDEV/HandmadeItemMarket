@@ -3,56 +3,51 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using HandmadeItemMarket.Attributes;
 using HandmadeItemMarket.Data;
 using HandmadeItemMarket.Models;
 using HandmadeItemMarket.Models.EntityModels;
-using HandmadeItemMarket.Models.ViewModels;
-using HandmadeItemMarket.Services;
 using Microsoft.AspNet.Identity;
 
-namespace HandmadeItemMarket.Areas.Market.Controllers
+namespace HandmadeItemMarket.Controllers
 {
-    [RouteArea("Market", AreaPrefix = "")]
-    [RoutePrefix("products")]
-    public class ProductsController : Controller
+    [CustomAuthorize(Roles = "BlogAuthor, Admin")]
+    [RoutePrefix("blog")]
+    public class BlogPostsController : Controller
     {
         private HandmadeItemMarketContext db = new HandmadeItemMarketContext();
-        private ProductsService service;
-            public ProductsController()
-        {
-            this.service=new ProductsService();
-        }
-        // GET: Products
-        [Route("Index"), AllowAnonymous]
+
+        // GET: BlogPosts
+        [AllowAnonymous]
+        [Route("index")]
         public ActionResult Index()
         {
-            return View(db.Products.ToList());
+            return View(db.BlogPosts.ToList());
         }
 
-        [Route("UploadImage/{id}"),AuthorizeAdminOrOwnerOfPost]
+        [Route("UploadImage/{id}")]
         public ActionResult UploadImage(int id)
         {
-            var lastProduct = db.Products.OrderByDescending(a => a.Id).FirstOrDefault();
-            return View(lastProduct);
+            var lastPost = db.BlogPosts.OrderByDescending(a => a.Id).FirstOrDefault();
+            return View(lastPost);
         }
-        [Route("UploadImage/{id}"), AuthorizeAdminOrOwnerOfPost]
+        [Route("UploadImage/{id}")]
         [HttpPost]
-        public ActionResult UploadImage(HttpPostedFileBase file, int id)
+        public ActionResult UploadImage(HttpPostedFileBase file,int id)
         {
             if (file != null)
             {
-                string pic = id.ToString() + ".jpg";//System.IO.Path.GetFileName(file.FileName);
+                string pic = id.ToString()+".jpg";//System.IO.Path.GetFileName(file.FileName);
                 string path = System.IO.Path.Combine(
-                                       Server.MapPath("~/images/products"), pic);
-                var product = db.Products.FirstOrDefault(b => b.Id == id);
-                product.Image = "/images/products/" + pic;
-                db.Products.AddOrUpdate(product);
+                                       Server.MapPath("~/images/blogpost"), pic);
+                var post = db.BlogPosts.FirstOrDefault(b=>b.Id==id);
+                post.Image = "/images/blogpost/"+ pic;
+                db.BlogPosts.AddOrUpdate(post);
                 db.SaveChanges();
                 // file is uploaded
                 file.SaveAs(path);
@@ -68,118 +63,111 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
 
             }
             // after successfully uploading redirect the user
-            return RedirectToAction("Index", "Products");
-        }
-        
-        [Route("select/{category}"),AllowAnonymous]
-        public ActionResult Select(string category)
-        {
-            IEnumerable<ProductVM> vms = this.service.RetrieveProductsFromCategory(category);
-            return View(vms);
+            return RedirectToAction("Index", "BlogPosts");
         }
 
-        // GET: Products/Details/5
-        [Route("details/{id}"),AllowAnonymous]
+        // GET: BlogPosts/Details/5
+        [AllowAnonymous]
+        [Route("details/{id}")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(blogPost);
         }
 
-        // GET: Products/Create
-        [Route("create"),CustomAuthorize(Roles = "RegisteredUser")]
+        // GET: BlogPosts/Create
+        [Route("create")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: BlogPosts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Route("create"), CustomAuthorize(Roles = "RegisteredUser")]
+        [Route("create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Price,Description,Rating,Category")] Product product)
+        public ActionResult Create([Bind(Include = "Id,Title,Content,ImageUrl")] BlogPost blogPost)
         {
             var userId = HttpContext.User.Identity.GetUserId();
-            product.Seller= db.Users.FirstOrDefault(a => a.Id == userId);
+            blogPost.DatePosted=DateTime.Now;
+            blogPost.Poster = db.Users.FirstOrDefault(a => a.Id == userId);//HttpContext.User.Identity.Name;
             
             if (ModelState.IsValid)
             {
-                db.Products.Add(product);
+                db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
-                var lastProduct = db.Products.OrderByDescending(a => a.Id).FirstOrDefault();
-                return RedirectToAction("UploadImage",lastProduct);
+                var lastPost = db.BlogPosts.OrderByDescending(a=>a.Id).FirstOrDefault();
+                return RedirectToAction("UploadImage",lastPost);
             }
-
-            return View(product);
+            return RedirectToAction("Index");
+            return View(blogPost);
         }
 
-        // GET: Products/Edit/5
-        [Route("edit/{id}"),AuthorizeAdminOrOwnerOfPost]
+        // GET: BlogPosts/Edit/5
+        [Route("edit/{id}")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(blogPost);
         }
 
-        // POST: Products/Edit/5
+        // POST: BlogPosts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Route("edit/{id}"), AuthorizeAdminOrOwnerOfPost]
         [HttpPost]
-        [ValidateAntiForgeryToken, AuthorizeAdminOrOwnerOfPost]
-        public ActionResult Edit([Bind(Include = "Id,Name,Price,Description,Rating,Category")] Product product)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,DatePosted,Title,Content,Rating")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(product).State = EntityState.Modified;
+                db.Entry(blogPost).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(blogPost);
         }
 
-        // GET: Products/Delete/5
-        [Route("delete/{id}"), AuthorizeAdminOrOwnerOfPost]
+        // GET: BlogPosts/Delete/5
+        [Route("delete/{id}")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Product product = db.Products.Find(id);
-            if (product == null)
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            if (blogPost == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(blogPost);
         }
 
-        // POST: Products/Delete/5
-        [Route("delete/{id}"), AuthorizeAdminOrOwnerOfPost]
+        // POST: BlogPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Product product = db.Products.Find(id);
-            db.Products.Remove(product);
+            BlogPost blogPost = db.BlogPosts.Find(id);
+            db.BlogPosts.Remove(blogPost);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

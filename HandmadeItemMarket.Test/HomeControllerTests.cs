@@ -10,14 +10,15 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HandmadeItemMarket.Test
 {
     [TestClass]
-    class HomeControllerTests
+    class HomeControllerTests:BaseTest
     {
-        public void Index_ShouldReturnTop9Products()
+        [TestMethod]
+        public void Index_ShouldReturnIndexViewName()
         {
             var controller = new HomeController();
             var result = controller.Index() as ViewResult;
-            
-            result.
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index",result.ViewName);
         }
     }
 }

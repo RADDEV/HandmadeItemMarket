@@ -16,13 +16,20 @@ using Microsoft.AspNet.Identity;
 
 namespace HandmadeItemMarket.Areas.Blog.Controllers
 {
+    using Services;
+
     [RouteArea("Blog",AreaPrefix = "")]
     [CustomAuthorize(Roles = "BlogAuthor, Admin")]
     [RoutePrefix("blog")]
     public class BlogPostsController : Controller
     {
         private HandmadeItemMarketContext db = new HandmadeItemMarketContext();
+        private BlogPostService service;
 
+        public BlogPostsController()
+        {
+            this.service = new BlogPostService();
+        }
         // GET: BlogPosts
         [AllowAnonymous]
         [Route("index")]
@@ -34,7 +41,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
         [Route("UploadImage/{id}")]
         public ActionResult UploadImage(int id)
         {
-            var lastPost = db.BlogPosts.OrderByDescending(a => a.Id).FirstOrDefault();
+            var lastPost = this.service.GetLastPost(id);
             return View(lastPost);
         }
         [Route("UploadImage/{id}")]
@@ -52,16 +59,6 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
                 db.SaveChanges();
                 // file is uploaded
                 file.SaveAs(path);
-
-                // save the image path path to the database or you can send image
-                // directly to database
-                // in-case if you want to store byte[] ie. for DB
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    file.InputStream.CopyTo(ms);
-                //    byte[] array = ms.GetBuffer();
-                //}
-
             }
             // after successfully uploading redirect the user
             return RedirectToAction("Index", "BlogPosts");

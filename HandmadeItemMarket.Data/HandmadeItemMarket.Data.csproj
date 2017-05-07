@@ -68,7 +68,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\IDbRepository.cs" />
+    <Compile Include="Contracts\IHandmadeItemMarketContext.cs" />
     <Compile Include="HandmadeItemMarketContext.cs" />
+    <Compile Include="HandmadeItemMarketDataContext.cs" />
     <Compile Include="Migrations\201705031600559_kur.cs" />
     <Compile Include="Migrations\201705031600559_kur.Designer.cs">
       <DependentUpon>201705031600559_kur.cs</DependentUpon>
@@ -90,7 +93,21 @@
       <DependentUpon>201705071353540_kurec.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Mocks\DbSets\MockedBlogPostsDbSet.cs" />
+    <Compile Include="Mocks\DbSets\MockedCategoriesDbSet.cs" />
+    <Compile Include="Mocks\DbSets\MockedCommentsDbSet.cs" />
+    <Compile Include="Mocks\DbSets\MockedOrdersDbSet.cs" />
+    <Compile Include="Mocks\DbSets\MockedProductsDbSet.cs" />
+    <Compile Include="Mocks\MockedDbSet.cs" />
+    <Compile Include="Mocks\MockedHandmadeItemMarketContext.cs" />
+    <Compile Include="Mocks\Repositories\MockedBlogPostsRepository.cs" />
+    <Compile Include="Mocks\Repositories\MockedCategoriesRepository.cs" />
+    <Compile Include="Mocks\Repositories\MockedCommentsRepository.cs" />
+    <Compile Include="Mocks\Repositories\MockedOrdersRepository.cs" />
+    <Compile Include="Mocks\Repositories\MockedProductsRepository.cs" />
+    <Compile Include="Mocks\Repositories\MockedRegisteredUsersRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DbRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -121,6 +138,7 @@
       <DependentUpon>201705071353540_kurec.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

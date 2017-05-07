@@ -8,6 +8,7 @@ namespace HandmadeItemMarket.Data
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using Mocks;
 
     public class HandmadeItemMarketContext : IdentityDbContext<ApplicationUser>
     {
@@ -28,6 +29,11 @@ namespace HandmadeItemMarket.Data
         public static HandmadeItemMarketContext Create()
         {
             return new HandmadeItemMarketContext();
+        }
+
+        public static implicit operator HandmadeItemMarketContext(MockedHandmadeItemMarketContext v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,24 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
-using HandmadeItemMarket.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HandmadeItemMarket.Test
 {
+    using System.Web.Mvc;
+    using Controllers;
+    using Services;
+
     [TestClass]
-    class HomeControllerTests:BaseTest
+    public class HomeControllerTests
     {
-        [TestMethod]
-        public void Index_ShouldReturnIndexViewName()
+        private readonly HomeController Controller;
+        private readonly HomeService HomeService;
+        public HomeControllerTests()
         {
-            var controller = new HomeController();
-            var result = controller.Index() as ViewResult;
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Index",result.ViewName);
+            this.HomeService = new HomeService();
+            this.Controller = new HomeController();
+        }
+
+        [TestMethod]
+        public void HomeIndex_ShouldReturnItsDefaultView()
+        {
+            var result = Controller.Index() as ViewResult;
+            Assert.IsTrue(string.IsNullOrEmpty(result.ViewName));
         }
     }
 }

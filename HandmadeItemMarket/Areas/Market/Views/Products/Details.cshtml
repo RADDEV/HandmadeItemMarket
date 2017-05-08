@@ -53,12 +53,34 @@
                     <button class="btn btn-lg btn-primary">Order</button>
                 </form>
             </p>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
         </div>
 
     </div>
     <hr>
+    <form action="/products/comment/@Model.Id">
+        <button class="btn btn-lg btn-primary">Comment</button>
+    </form>
+    <br/>
+    @foreach (var item in Model.Comments)
+    {
+        <div class="row">
+            <div style="border: gray; border-style: solid;border-width: thin">
+                <div class="col-sm-3">
+                    <ul>
+                        <li><i class="fa fa-user"></i> @item.Poster.UserName</li>
+                        <li><i class="fa fa-clock-o"></i> @item.DatePosted.Hour:@item.DatePosted.Minute</li>
+                        <li><i class="fa fa-calendar"></i> @item.DatePosted.Date.Day-@item.DatePosted.Date.Month-@item.DatePosted.Date.Year</li>
+                    </ul>
+                </div>
+                <div class="col-sm-9">@item.Text</div>
+            </div>
+        </div>
+    }
+
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

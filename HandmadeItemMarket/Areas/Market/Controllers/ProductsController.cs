@@ -35,6 +35,31 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
             return View(db.Products.ToList());
         }
 
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser")]
+        public ActionResult Comment(int id)
+        {
+            return View();
+        }
+
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser"),HttpPost]
+        public ActionResult Comment([Bind(Include = "Id,Text,Rating,DatePosted,Poster")]Comment comment,int id)
+        {
+            comment.Rating = 2;
+            comment.DatePosted=DateTime.Now;
+            var currentUserId = HttpContext.User.Identity.GetUserId();
+            comment.Poster = db.Users.FirstOrDefault(u => u.Id == currentUserId);
+
+            if (ModelState.IsValid)
+            {
+                var product = db.Products.FirstOrDefault(p => p.Id == id);
+                product.Comments.Add(comment);
+                db.Products.AddOrUpdate(product);
+                db.SaveChanges();
+                return RedirectToAction("Details", "Products",id);
+            }
+            return View();
+        }
+
         [Route("UploadImage/{id}"),AuthorizeAdminOrOwnerOfPost]
         public ActionResult UploadImage(int id)
         {

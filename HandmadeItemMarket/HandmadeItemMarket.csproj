@@ -295,6 +295,7 @@
     <Content Include="Areas\Blog\Views\Shared\Unauthorized.cshtml" />
     <Content Include="Areas\Blog\Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Areas\Blog\Views\Shared\_Sidebar.cshtml" />
+    <Content Include="Areas\Market\Views\Products\Comment.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

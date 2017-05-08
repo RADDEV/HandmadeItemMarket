@@ -12,6 +12,8 @@ using Microsoft.AspNet.Identity;
 
 namespace HandmadeItemMarket.Services
 {
+    using System.Data.Entity.Migrations;
+
     public class OrderService:Service
     {
         public IEnumerable<OrderVM> RetrieveRecievedOrders(string currentUserId)
@@ -23,6 +25,8 @@ namespace HandmadeItemMarket.Services
 
         public void SendMail(string sellerId)
         {
+            try
+            {
             var user = Context.Users.FirstOrDefault(u => u.Id == sellerId);
             MailMessage mail = new MailMessage();
             mail.To.Add(user.UserName);
@@ -41,6 +45,30 @@ namespace HandmadeItemMarket.Services
             //Or your Smtp Email ID and Password
             smtp.EnableSsl = true;
             smtp.Send(mail);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public Order CreateOrder(string currentUserId,int id)
+        {
+            var order = new Order()
+            {
+                Product = Context.Products.FirstOrDefault(p => p.Id == id),
+                OrderedOn = DateTime.Now,
+                Buyer = Context.Users.FirstOrDefault(u => u.Id == currentUserId)
+            };
+            return order;
+        }
+
+        public void RaiseProductRating(int id)
+        {
+           var product = this.Context.Products.FirstOrDefault(p => p.Id == id);
+            product.Rating = product.Rating + 1;
+            Context.Products.AddOrUpdate(product);
+            Context.SaveChanges();
         }
     }
 }

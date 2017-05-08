@@ -35,10 +35,6 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
             var currentUserId = HttpContext.User.Identity.GetUserId();
             IEnumerable<OrderVM> vms = this.service.RetrieveRecievedOrders(currentUserId);
             return View(vms);
-
-            
-            //var orders = db.Orders.Where(a => a.Seller.Id == currentUserId).ToList();
-            //return View(orders);
         }
 
         // GET: Orders/Details/5
@@ -55,17 +51,13 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
             }
             return View(order);
         }
+
         [Route("Create/{id}")]
         // GET: Orders/Create
         public ActionResult Create(int id)
         {
             var currentUserId = HttpContext.User.Identity.GetUserId();
-            Order order = new Order()
-            {
-                Product = db.Products.FirstOrDefault(p => p.Id == id),
-                OrderedOn = DateTime.Now,
-                Buyer = db.Users.FirstOrDefault(u => u.Id == currentUserId)
-            };
+            Order order = this.service.CreateOrder(currentUserId,id);
             return View(order);
         }
 
@@ -77,11 +69,12 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,OrderedOn,FullAddress,AditionalInfo")] Order order,int id)
         {
+            string currentUserId = HttpContext.User.Identity.GetUserId();
             order.Product = db.Products.FirstOrDefault(p => p.Id == id);
             order.OrderedOn = DateTime.Now;
-            var currentUserId = HttpContext.User.Identity.GetUserId();
             order.Buyer = db.Users.FirstOrDefault(u => u.Id == currentUserId);
             order.Seller = db.Products.FirstOrDefault(p => p.Id == id).Seller;
+            this.service.RaiseProductRating(id);
             this.service.SendMail(order.Seller.Id);
             
             if (ModelState.IsValid)
@@ -91,7 +84,6 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index","Products");
             }
-
             return View(order);
         }
 

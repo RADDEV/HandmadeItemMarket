@@ -31,9 +31,6 @@ namespace HandmadeItemMarket.Data
             return new HandmadeItemMarketContext();
         }
 
-        public static implicit operator HandmadeItemMarketContext(MockedHandmadeItemMarketContext v)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

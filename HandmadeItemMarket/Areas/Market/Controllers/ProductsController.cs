@@ -107,11 +107,11 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
         [HttpPost]
         [Route("create"), CustomAuthorize(Roles = "RegisteredUser")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Price,Description,Rating,Category")] Product product)
+        public ActionResult Create([Bind(Include = "Id,Name,Price,Description,Category")] Product product)
         {
             var userId = HttpContext.User.Identity.GetUserId();
             product.Seller= db.Users.FirstOrDefault(a => a.Id == userId);
-            
+            product.Rating = 2;
             if (ModelState.IsValid)
             {
                 db.Products.Add(product);

@@ -20,7 +20,7 @@ namespace HandmadeItemMarket.Data.Mocks
             this.Products = new MockedProductsDbSet();
             this.Comments = new MockedCommentsDbSet();
             this.BlogPosts = new MockedBlogPostsDbSet();
-            this.RegisteredUsers = new MockedDbSet<RegisteredUser>();
+            this.ApplicationUsers = new MockedDbSet<ApplicationUser>();
             this.Categories = new MockedCategoriesDbSet();
             this.Orders = new MockedOrdersDbSet();
         }
@@ -28,7 +28,7 @@ namespace HandmadeItemMarket.Data.Mocks
         public IDbSet<Product> Products { get; set; }
         public IDbSet<Comment> Comments { get; set; }
         public IDbSet<BlogPost> BlogPosts { get; set; }
-        public IDbSet<RegisteredUser> RegisteredUsers { get; set; }
+        public IDbSet<ApplicationUser> ApplicationUsers { get; set; }
         public IDbSet<Category> Categories { get; set; }
         public IDbSet<Order> Orders { get; set; }
         public DbSet<T> Set<T>() where T : class
@@ -53,5 +53,8 @@ namespace HandmadeItemMarket.Data.Mocks
         {
             this.DbContext.Dispose();
         }
+
+        public IDbSet<RegisteredUser> Users { get; set; }
+        public IDbSet<RegisteredUser> RegisteredUsers { get; set; }
     }
 }

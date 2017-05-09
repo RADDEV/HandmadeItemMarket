@@ -19,7 +19,6 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
     using Services;
 
     [RouteArea("Blog",AreaPrefix = "")]
-    [CustomAuthorize(Roles = "BlogAuthor, Admin")]
     [RoutePrefix("blog")]
     public class BlogPostsController : Controller
     {
@@ -38,6 +37,31 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
             return View(db.BlogPosts.ToList());
         }
 
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
+        public ActionResult Comment(int id)
+        {
+            return View();
+        }
+
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor"), HttpPost]
+        public ActionResult Comment([Bind(Include = "Id,Text,Rating,DatePosted,Poster")]Comment comment, int id)
+        {
+            comment.Rating = 2;
+            comment.DatePosted = DateTime.Now;
+            var currentUserId = HttpContext.User.Identity.GetUserId();
+            comment.Poster = db.Users.FirstOrDefault(u => u.Id == currentUserId);
+
+            if (ModelState.IsValid)
+            {
+                var blogPost = db.BlogPosts.FirstOrDefault(p => p.Id == id);
+                blogPost.Comments.Add(comment);
+                db.BlogPosts.AddOrUpdate(blogPost);
+                db.SaveChanges();
+                return RedirectToAction("Details", "BlogPosts", id);
+            }
+            return View();
+        }
+        [CustomAuthorize(Roles = "Admin,BlogAuthor")]
         [Route("UploadImage/{id}")]
         public ActionResult UploadImage(int id)
         {
@@ -46,6 +70,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
         }
         [Route("UploadImage/{id}")]
         [HttpPost]
+        [CustomAuthorize(Roles = "Admin,BlogAuthor")]
         public ActionResult UploadImage(HttpPostedFileBase file,int id)
         {
             if (file != null)
@@ -83,6 +108,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
 
         // GET: BlogPosts/Create
         [Route("create")]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult Create()
         {
             return View();
@@ -93,6 +119,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Route("create")]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Title,Content,ImageUrl")] BlogPost blogPost)
         {
@@ -113,6 +140,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
 
         // GET: BlogPosts/Edit/5
         [Route("edit/{id}")]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -132,6 +160,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult Edit([Bind(Include = "Id,DatePosted,Title,Content,Rating")] BlogPost blogPost)
         {
             if (ModelState.IsValid)
@@ -145,6 +174,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
 
         // GET: BlogPosts/Delete/5
         [Route("delete/{id}")]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -162,6 +192,7 @@ namespace HandmadeItemMarket.Areas.Blog.Controllers
         // POST: BlogPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult DeleteConfirmed(int id)
         {
             BlogPost blogPost = db.BlogPosts.Find(id);

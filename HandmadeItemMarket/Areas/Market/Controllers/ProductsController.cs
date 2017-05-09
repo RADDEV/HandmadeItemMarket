@@ -35,17 +35,17 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
             return View(db.Products.ToList());
         }
 
-        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser")]
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor")]
         public ActionResult Comment(int id)
         {
             return View();
         }
 
-        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser"),HttpPost]
-        public ActionResult Comment([Bind(Include = "Id,Text,Rating,DatePosted,Poster")]Comment comment,int id)
+        [Route("Comment/{id}"), CustomAuthorize(Roles = "Admin,RegisteredUser,BlogAuthor"), HttpPost]
+        public ActionResult Comment([Bind(Include = "Id,Text,Rating,DatePosted,Poster")]Comment comment, int id)
         {
             comment.Rating = 2;
-            comment.DatePosted=DateTime.Now;
+            comment.DatePosted = DateTime.Now;
             var currentUserId = HttpContext.User.Identity.GetUserId();
             comment.Poster = db.Users.FirstOrDefault(u => u.Id == currentUserId);
 
@@ -55,7 +55,7 @@ namespace HandmadeItemMarket.Areas.Market.Controllers
                 product.Comments.Add(comment);
                 db.Products.AddOrUpdate(product);
                 db.SaveChanges();
-                return RedirectToAction("Details", "Products",id);
+                return RedirectToAction("Details", "Products", id);
             }
             return View();
         }
